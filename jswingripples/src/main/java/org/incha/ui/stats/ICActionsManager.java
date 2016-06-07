@@ -92,7 +92,7 @@ public final class ICActionsManager {
         popup.add(new JSeparator(JSeparator.HORIZONTAL));
         popup.add(new ShowDependencyAction(node));
         popup.add(new JSeparator(JSeparator.HORIZONTAL));
-
+        popup.add(new SpecificGraphAction("Graph dependencies"));
         popup.add(new JSeparator(JSeparator.HORIZONTAL));
         popup.add(new UndoAction(eig.getHistory(), "undo", context));
         popup.add(new RedoAction(eig.getHistory(), "redo", context));

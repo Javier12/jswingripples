@@ -1,0 +1,64 @@
+node {
+    size: 20px, 20px;
+    shape: circle;
+    fill-color: black;
+    text-mode: normal;
+    text-background-mode: rounded-box;
+    text-visibility-mode: normal;
+    text-alignment: at-right;
+}
+
+node:clicked {
+    fill-color: darkmagenta;
+}
+
+node.blank {
+    size: 20px, 20px;
+    shape: circle;
+    fill-color: black;
+    text-mode: normal;
+    text-background-mode: rounded-box;
+    text-visibility-mode: normal;
+    text-alignment: at-right;
+}
+
+node.changed {
+    size: 20px, 20px;
+    shape: circle;
+    fill-color: red;
+    text-mode: normal;
+    text-background-mode: rounded-box;
+    text-visibility-mode: normal;
+    text-alignment: at-right;
+}
+
+node.impacted {
+    size: 20px, 20px;
+    shape: circle;
+    fill-color: darkred;
+    text-mode: normal;
+    text-background-mode: rounded-box;
+    text-visibility-mode: normal;
+    text-alignment: at-right;
+}
+
+node.next {
+    size: 20px, 20px;
+    shape: circle;
+    fill-color: darkgreen;
+    text-mode: normal;
+    text-background-mode: rounded-box;
+    text-visibility-mode: normal;
+    text-alignment: at-right;
+}
+
+node.propagating {
+    size: 20px, 20px;
+    shape: circle;
+    fill-color: darkorange;
+    text-mode: normal;
+    text-background-mode: rounded-box;
+    text-visibility-mode: normal;
+    text-alignment: at-right;
+}
+

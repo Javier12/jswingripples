@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.incha</groupId>
 	<artifactId>jswingripples</artifactId>
-	<version>0.0.1</version>
+	<version>0.1 Milestone 1</version>
 	<description>Swing port of JRipples Eclipse Plugin</description>
 	<properties>
 		<mainClass>org.incha.ui.JSwingRipplesApplication</mainClass>
@@ -27,6 +27,13 @@
 			<artifactId>org.eclipse.jdt.core</artifactId>
 			<version>3.10.0</version>
 		</dependency>
+		<!-- Text Editor-->
+		<dependency>
+			<groupId>com.fifesoft</groupId>
+			<artifactId>rsyntaxtextarea</artifactId>
+			<version>2.5.8</version>
+			<optional>false</optional>
+		</dependency>
 
 		<!-- Tests -->
 		<dependency>
@@ -34,6 +41,32 @@
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- Graphs -->
+		<dependency>
+			<artifactId>gs-core</artifactId>
+			<groupId>org.graphstream</groupId>
+			<version>1.3</version>
+			<optional>false</optional>
+		</dependency>
+        <dependency>
+            <artifactId>gs-algo</artifactId>
+            <groupId>org.graphstream</groupId>
+            <version>1.3</version>
+            <optional>false</optional>
+        </dependency>
+		<dependency>
+			<artifactId>gs-ui</artifactId>
+			<groupId>org.graphstream</groupId>
+			<version>1.3</version>
+			<optional>false</optional>
+		</dependency>
+		<!-- Search -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>3.6.2</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -81,5 +114,11 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 </project>

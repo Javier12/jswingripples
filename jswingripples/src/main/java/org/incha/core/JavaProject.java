@@ -1,10 +1,12 @@
 package org.incha.core;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Stores the information about the JavProject being worked on, like name, Objectsw, Statistics, etc.
+ * Stores the information about the JavProject being worked on, like name, Objects, Statistics, etc.
  */
 public class JavaProject {
     /**
@@ -27,7 +29,6 @@ public class JavaProject {
 
     /**
      * @param name the project name.
-     * @param location project location.
      */
     public JavaProject(final String name) {
         super();
@@ -40,6 +41,11 @@ public class JavaProject {
     public BuildPath getBuildPath() {
         return buildPath;
     }
+
+    /**
+     * @return the project's source Files.
+     */
+    public List<File> getSources() { return buildPath.getSources(); }
     /**
      * @return the project name.
      */
@@ -76,13 +82,13 @@ public class JavaProject {
     }
 
     /**
-     * @return
+     * @return the moduleConfiguration.
      */
     public ModuleConfiguration getModuleConfiguration() {
         return moduleConfiguration;
     }
     /**
-     * @param moduleConfiguration the moduleConfiguration to set
+     * @param moduleConfiguration the moduleConfiguration to set.
      */
     public void setModuleConfiguration(final ModuleConfiguration moduleConfiguration) {
         this.moduleConfiguration = moduleConfiguration;

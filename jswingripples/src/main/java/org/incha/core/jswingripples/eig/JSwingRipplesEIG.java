@@ -91,7 +91,7 @@ import org.incha.core.jswingripples.eig.history.History;
  * @see JSwingRipplesEIGEdge
  *
  */
-public final class JSwingRipplesEIG {
+public final class JSwingRipplesEIG implements Cloneable{
 	private Map<IMember, JSwingRipplesEIGNode> nodes;
 	private Set<JSwingRipplesEIGNode> topNodes;
 	private Map<JSwingRipplesEIGNode, HashSet<JSwingRipplesEIGNode>> members; //Node -> Set of members
@@ -119,7 +119,9 @@ public final class JSwingRipplesEIG {
 	    initEIG();
 	    this.projectName = projectName;
 	}
-
+	public Object clone()throws CloneNotSupportedException{  
+		return super.clone();  
+		}  
 	/**
 	 * Reinitializes JRipples EIG for a new analysis - that is, it deletes all nodes and edges from the database and clears undo / redo history.
 	 * <br>Please note, that project and main class are not reset.

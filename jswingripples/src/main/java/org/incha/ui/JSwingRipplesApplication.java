@@ -7,7 +7,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.LinkedList;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -26,8 +28,8 @@ import org.apache.commons.logging.LogFactory;
 import org.incha.core.JavaProject;
 import org.incha.core.JavaProjectsModel;
 import org.incha.core.StatisticsManager;
-import org.incha.ui.stats.ShowCurrentStateAction;
-import org.incha.ui.stats.StartAnalysisAction;
+import org.incha.ui.stats.*;
+import org.incha.ui.search.NewSearchMenu;
 
 public class JSwingRipplesApplication extends JFrame {
     private static final long serialVersionUID = 6142679404175274529L;
@@ -39,6 +41,8 @@ public class JSwingRipplesApplication extends JFrame {
     private final ProjectsView projectsView;
     private static JSwingRipplesApplication instance;
     private final ProgressMonitorImpl progressMonitor = new ProgressMonitorImpl();
+
+	
 
     /**
      * Default constructor.
@@ -154,9 +158,9 @@ public class JSwingRipplesApplication extends JFrame {
     /**
      * @return
      */
-    private JMenuBar createMenuBar() {
-        final JMenuBar bar = new JMenuBar();
-
+    private JMenuBar createMenuBar() {    	
+        final JMenuBar bar = new JMenuBar();       
+        
         //file menu
         final JMenu file = new JMenu("File");
         bar.add(file);
@@ -170,25 +174,49 @@ public class JSwingRipplesApplication extends JFrame {
         });
         file.add(newProject);
 
+        //Import Project option.
+        //Imports a project into the workspace
+        final JMenuItem importProject = new JMenuItem("Import Project");
+        importProject.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                importProject();
+            }
+        });
+        file.add(importProject);
+
         //JRipples menu
         final JMenu jRipples = new JMenu("JRipples");
         bar.add(jRipples);
 
         final JMenuItem startAnalysis = new JMenuItem("Start analysis");
-        startAnalysis.addActionListener(new StartAnalysisAction());
+        StartAnalysisAction act = new StartAnalysisAction();
+        startAnalysis.addActionListener(act);
         jRipples.add(startAnalysis);
 
         jRipples.add(new JSeparator(JSeparator.HORIZONTAL));
         final JMenuItem currentState = new JMenuItem("Current state - statistics");
         currentState.addActionListener(new ShowCurrentStateAction());
         jRipples.add(currentState);
+
+        final JMenuItem currentGraph = new JMenuItem("Current Graph");
+        currentGraph.addActionListener(new GraphVisualizationAction());
+        jRipples.add(currentGraph);
+
+        final JMenuItem impactGraph = new JMenuItem("Impact Set Graph");
+        impactGraph.addActionListener(new ImpactGraphVisualizationAction());
+        jRipples.add(impactGraph);
+        
+       
 //        final JMenuItem manageStates = new JMenuItem("Manage Statess");
 //        jRipples.add(manageStates);
 //        final JMenuItem saveState = new JMenuItem("Save State");
 //        jRipples.add(saveState);
 //        final JMenuItem loadState = new JMenuItem("Load State");
-//        jRipples.add(loadState);
-
+//        jRipples.add(loadState);        
+        
+        bar.add(new NewSearchMenu().getSearchPanel());  //Se agrega el menu de búsqueda
+        
         return bar;
     }
 
@@ -201,6 +229,21 @@ public class JSwingRipplesApplication extends JFrame {
             JavaProjectsModel.getInstance().addProject(project);
         }
     }
+
+    /**
+     * Import a project from a path.
+     */
+    protected void importProject(){
+        final JavaProject project = NewProjectWizard.showDialog(this);
+        if (project != null) {
+            if(JavaProjectsModel.getInstance().addProject(project)) {
+                new ImportSource(project);
+            }
+        }
+
+
+    }
+
     /**
      * @return the application home folder.
      */
@@ -209,20 +252,33 @@ public class JSwingRipplesApplication extends JFrame {
     }
 
     public static void main(final String[] args) {
+        System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
         //init logging
         getHome().mkdirs();
 
+        //Properties
+        Properties prop = new Properties();
+        try
+        {
+            InputStream in = JSwingRipplesApplication.class.getClassLoader().getResourceAsStream("project.properties");
+            prop.load(in);
+        } catch (IOException e) {
+            LogFactory.getLog(JSwingRipplesApplication.class).error("Missing properties file!");
+            System.exit(1);
+        }
         final JFrame f = new JSwingRipplesApplication();
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //set frame location
         final Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         f.setSize(size.width / 2, size.height / 2);
         f.setLocationByPlatform(true);
-        LogFactory.getLog(JSwingRipplesApplication.class).debug("Prueba uno");
+        //LogFactory.getLog(JSwingRipplesApplication.class).debug("Prueba uno");
+        String info = prop.getProperty("project_name") + " version " + prop.getProperty("project_version");
+        LogFactory.getLog(JSwingRipplesApplication.class).info(info);
         
         // If called with the protocol args
         processArgs(args);
-        
 
         //show frame
         SwingUtilities.invokeLater(new Runnable() {

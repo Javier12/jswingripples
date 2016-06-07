@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 
 import org.incha.core.jswingripples.eig.JSwingRipplesEIGNode;
+import org.incha.core.search.Highlight;
 import org.incha.ui.jripples.EIGStatusMarks;
 
 public class ClassTreeRenderer extends AbstractMemberRenderer {
@@ -13,9 +14,7 @@ public class ClassTreeRenderer extends AbstractMemberRenderer {
     /**
      * Default constructor.
      */
-    public ClassTreeRenderer() {
-        super();
-    }
+    public ClassTreeRenderer() { super(); }
 
     /**
      * @param label
@@ -28,6 +27,7 @@ public class ClassTreeRenderer extends AbstractMemberRenderer {
         final String mark = node.getMark();
         switch (column) {
             case 0:
+                label.setBackground(Highlight.getColor(node.getShortName()));
             break;
             case 1:
                 if (mark != null && !mark.isEmpty()) {

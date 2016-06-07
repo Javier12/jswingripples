@@ -2,14 +2,18 @@ package org.incha.ui.stats;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 
 import org.incha.core.JavaProject;
 import org.incha.core.JavaProjectsModel;
 import org.incha.core.ModuleConfiguration;
 import org.incha.core.StatisticsManager;
+import org.incha.core.jswingripples.GraphBuilder;
 import org.incha.core.jswingripples.JRipplesModuleInterface;
+import org.incha.core.jswingripples.NodeSearchBuilder;
 import org.incha.core.jswingripples.eig.JSwingRipplesEIG;
+import org.incha.core.search.Indexer;
 import org.incha.ui.JSwingRipplesApplication;
 import org.incha.ui.jripples.JRipplesDefaultModulesConstants;
 
@@ -17,6 +21,7 @@ public class StartAnalysisAction implements ActionListener {
     /**
      * Default constructor.
      */
+	
     public StartAnalysisAction() {
         super();
     }
@@ -88,6 +93,37 @@ public class StartAnalysisAction implements ActionListener {
             }
 
             StatisticsManager.getInstance().addStatistics(config, eig);
+
+            GraphBuilder.getInstance().addEIG(eig);
+            GraphBuilder.getInstance().resetGraphs();
+            //GraphBuilder.getInstance().prepareDependencyGraph();
+            Thread t = new Thread(new GraphBuild());
+            t.start();
+            eig.addJRipplesEIGListener(GraphBuilder.getInstance());
+            try {
+				NodeSearchBuilder.getInstance().addEIG(eig);
+			} catch (CloneNotSupportedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+           // NodeSearchBuilder.getInstance().setSearch("Node");
+            // Set search indexer current project.
+            try {
+                //Indexer.getInstance().indexProject(project);
+                Indexer.getInstance().indexEIG(eig);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
+
+    private class GraphBuild implements Runnable
+    {
+        @Override
+        public void run() {
+            GraphBuilder.getInstance().prepareGraphs();
+        }
+    }
+
+
 }

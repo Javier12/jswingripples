@@ -3,6 +3,7 @@ package org.incha.ui.classview;
 import javax.swing.table.TableCellRenderer;
 
 import org.incha.core.JavaProject;
+import org.incha.core.search.Searcher;
 import org.incha.ui.jripples.JRipplesViewsConstants;
 
 public class ClassTreeView extends AbstractHierarchicalView {
@@ -13,6 +14,7 @@ public class ClassTreeView extends AbstractHierarchicalView {
      */
     public ClassTreeView(final JavaProject project) {
         super(project);
+        Searcher.getInstance().setClassTreeView(this);
     }
     /* (non-Javadoc)
      * @see org.incha.ui.AbstractHierarchicalView#createModel()
